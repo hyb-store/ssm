@@ -1,5 +1,7 @@
 package com.hyb.ssm.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hyb.ssm.dao.IOrdersDao;
 import com.hyb.ssm.domain.Orders;
 import com.hyb.ssm.service.IOrdersService;
@@ -17,7 +19,9 @@ public class OrdersServiceImpl implements IOrdersService {
     private IOrdersDao ordersDao;
 
     @Override
-    public List<Orders> findAll() throws Exception {
+    public List<Orders> findAll(int page, int size) throws Exception {
+        //pageNum:页码    pageSize：每页显示条数
+        PageHelper.startPage(page,size);
         return ordersDao.findAll();
     }
 }
