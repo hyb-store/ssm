@@ -245,9 +245,7 @@
                                     <td class="text-center">
                                         <button type="button" class="btn bg-olive btn-xs">订单</button>
                                         <button type="button" class="btn bg-olive btn-xs"
-                                                onclick="location.href='${pageContext.request.contextPath}/orders/findById.do?id=${orders.id}'">
-                                            详情
-                                        </button>
+                                                onclick="location.href='${pageContext.request.contextPath}/orders/findById.do?id=${orders.id}'">详情</button>
                                         <button type="button" class="btn bg-olive btn-xs">编辑</button>
                                     </td>
                                 </tr>
@@ -308,15 +306,15 @@
                 <div class="box-footer">
                     <div class="pull-left">
                         <div class="form-group form-inline">
-                            总共2 页，共14 条数据。 每页
+                            总共${pageInfo.pages}页，共${pageInfo.total}条数据。 每页
                             <select class="form-control" id="changePageSize" onchange="changePageSize()">
-                                <option disabled="disabled" selected="selected">-</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select> 条
+<%--                                <option disabled="disabled" selected="selected">-</option>--%>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>条
                         </div>
                     </div>
 
@@ -500,6 +498,9 @@
             }
             $(this).data("clicks", !clicks);
         });
+
+        //每页显示条数默认
+        $("#changePageSize").find("option[value=${pageInfo.pageSize}]").prop("selected",true);
     });
 </script>
 </body>

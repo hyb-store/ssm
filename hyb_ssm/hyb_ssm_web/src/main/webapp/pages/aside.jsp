@@ -7,7 +7,8 @@
 		<!-- Sidebar user panel -->
 		<div class="user-panel">
 			<div class="pull-left image">
-				<img src="${pageContext.request.contextPath}/img/user2-160x160.jpg"
+<%--				<img src="${pageContext.request.contextPath}/img/user2-160x160.jpg"--%>
+				<img src="${pageContext.request.contextPath}/img/qq.jpg"
 					class="img-circle" alt="User Image">
 			</div>
 			<div class="pull-left info">
