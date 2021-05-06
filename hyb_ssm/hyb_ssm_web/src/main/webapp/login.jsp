@@ -24,13 +24,13 @@
           href="${pageContext.request.contextPath}/plugins/iCheck/square/blue.css">
 </head>
 
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background:url(${pageContext.request.contextPath}/img/login.jpg);background-size:cover">
 <div class="login-box">
     <div class="login-logo">
-        <a href="all-admin-index.html"><b>ITCAST</b>后台管理系统</a>
+        <a href="all-admin-index.html"><span style="color: #001a35"><b>后台管理系统</b></span></a>
     </div>
     <!-- /.login-logo -->
-    <div class="login-box-body">
+    <div class="login-box-body" style="opacity:0.8">
         <p class="login-box-msg">登录系统</p>
 
         <form action="${pageContext.request.contextPath}/login.do" method="post">
