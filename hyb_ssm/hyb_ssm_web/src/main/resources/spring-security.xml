@@ -7,6 +7,33 @@
     http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <!--开启jsr250-annotations="enabled"
+        @RolesAllowed表示访问对应方法时所应该具有的角色
+            示例： @RolesAllowed({"USER", "ADMIN"}) 该方法只要具有"USER", "ADMIN"任意一种权限就可以访问。
+            这里可以省 略前缀ROLE_，实际的权限可能是ROLE_ADMIN
+        @PermitAll表示允许所有的角色进行访问，也就是说不进行权限控制
+        @DenyAll是和PermitAll相反的，表示无论什么角色都不能访问
+    <security:global-method-security jsr250-annotations="enabled"></security:global-method-security>-->
+
+
+    <!--开启secured-annotations="enabled"
+       @Secured注解标注的方法进行权限控制的支持，其值默认为disabled。
+    <security:global-method-security secured-annotations="enabled"></security:global-method-security>-->
+
+
+    <!--开启
+        @PreAuthorize 在方法调用之前,基于表达式的计算结果来限制对方法的访问
+        @PostAuthorize 允许方法调用,但是如果表达式计算结果为false,将抛出一个安全性异常
+        @PostFilter 允许方法调用,但必须按照表达式来过滤方法的结果
+        @PreFilter 允许方法调用,但必须在进入方法之前过滤输入值
+    -->
+    <security:global-method-security pre-post-annotations="enabled"></security:global-method-security>
+
+
+
+
+
+
     <!-- 配置不拦截的资源 -->
     <security:http pattern="/login.jsp" security="none"/>
     <security:http pattern="/failer.jsp" security="none"/>
@@ -19,9 +46,9 @@
     	auto-config="true"	不用自己编写登录的页面，框架提供默认登录页面
     	use-expressions="false"	是否使用SPEL表达式（没学习过）
     -->
-    <security:http auto-config="true" use-expressions="false">
+    <security:http auto-config="true" use-expressions="true">
         <!-- 配置具体的拦截的规则 pattern="请求路径的规则" access="访问系统的人，必须有ROLE_USER的角色" -->
-        <security:intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN"/>
+        <security:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
 
         <!-- 定义跳转的具体的页面 -->
         <security:form-login
@@ -50,6 +77,10 @@
 
     <!-- 配置加密类 -->
     <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <!--如果 上边 use-expressions="false" access中不用表达式 。如果在页面仍然要用SPEL表达式，打开下面bean-->
+    <!-- <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />-->
+
 
     <!-- 提供了入门的方式，在内存中存入用户名和密码
     <security:authentication-manager>

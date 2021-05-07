@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class ProductController {
 
     //查询全部产品
     @RequestMapping("/findAll.do")
+    @RolesAllowed("ADMIN")//该方法只要具有"ADMIN"权限就可以访问
     public ModelAndView findAll() throws Exception {
         ModelAndView mv = new ModelAndView();
         List<Product> ps = productService.findAll();

@@ -11,7 +11,7 @@ public class BCryptPasswordEncoderUtils {
     }
 
     public static void main(String[] args) {
-        String password = "cannot";
+        String password = "123";
         String pwd = encodePassword(password);
         System.out.println(pwd);
         //第一次加密：$2a$10$sjNzRt8mbeGBL7B1VZvaaurGpJUnLzGffGQb/Bv5piv2AhPEPLnnK
