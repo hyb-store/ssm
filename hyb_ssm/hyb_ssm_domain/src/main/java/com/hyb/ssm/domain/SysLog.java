@@ -80,5 +80,4 @@ public class SysLog {
     public void setMethod(String method) {
         this.method = method;
     }
-
 }
