@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 
 @Component
@@ -74,7 +76,8 @@ public class LogAop {
                     url = classValue[0] + methodValue[0];
 
                     //获取访问的ip
-                    String ip = request.getRemoteAddr();
+                    //String ip = request.getRemoteAddr();
+                    String ip = IpInfoUtils.getIpAddr(request);
 
                     //获取当前操作的用户
                     SecurityContext context = SecurityContextHolder.getContext();//从上下文中获了当前登录的用户
@@ -96,5 +99,48 @@ public class LogAop {
             }
         }
 
+    }
+}
+class IpInfoUtils {
+    /**
+     * 获取客户端IP地址
+     *
+     * @param request 请求
+     * @return
+     */
+    public static String getIpAddr(HttpServletRequest request) {
+
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+            if ("127.0.0.1".equals(ip)) {
+                //根据网卡取本机配置的IP
+                InetAddress inet = null;
+                try {
+                    inet = InetAddress.getLocalHost();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                if (inet != null) {
+                    ip = inet.getHostAddress();
+                }
+            }
+        }
+        // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        if (ip != null && ip.length() > 15) {
+            if (ip.indexOf(",") > 0) {
+                ip = ip.substring(0, ip.indexOf(","));
+            }
+        }
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            ip = "127.0.0.1";
+        }
+        return ip;
     }
 }
